@@ -1,0 +1,29 @@
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+  margin: 0 2vh 0 2vh;
+}
+
+.photo-card {
+  width: 100%;
+}
+.card-header {
+  height: auto; /* Set height to auto to adjust based on content */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mat-card-header-text {
+  margin-bottom: 10px; /* Add some space between title and other elements */
+  font-size: 10px;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px; /* Adjust height as needed */
+  margin-top: 20px; /* Add some space between cards and spinner */
+}
