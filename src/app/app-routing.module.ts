@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EmployeeListComponent } from './dashboard/employee/employee-list/employee-list.component';
+import { EmployeeTableComponent } from './dashboard/employee/employee-table/employee-table.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -11,8 +12,9 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     children: [
-      { path: '', redirectTo: 'employee-list', pathMatch: 'full' }, // Redirect to employee-list by default
       { path: 'employee-list', component: EmployeeListComponent },
+      { path: 'employee-table', component: EmployeeTableComponent },
+      { path: '', redirectTo: 'employee-list', pathMatch: 'full' }, // Redirect to employee-list by default
     ]
   },
 ];

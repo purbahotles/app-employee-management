@@ -1,37 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import {MatTableModule} from '@angular/material/table';
+import { Component, OnInit, HostListener } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css'],
-  standalone: true,
-  imports: [MatTableModule],
 })
 export class EmployeeListComponent implements OnInit {
-  employees: any[] = [];
 
-  constructor() {}
-
-  ngOnInit(): void {
-    // Generate 100 dummy employee entries
-    for (let i = 0; i < 100; i++) {
-      const dummyEmployee = {
-        username: `johndoe${i}`,
-        firstName: 'John',
-        lastName: 'Doe',
-        email: `johndoe${i}@example.com`,
-        birthDate: '1990-01-15',
-        basicSalary: 55000,
-        status: 'Active',
-        group: 'Engineering',
-        description: '2023-01-15',
-      };
-      this.employees.push(dummyEmployee);
+    // ...
+    photos: any[] = [];
+    page = 1; // Initial page number
+    limit = 10; // Number of items to load per page
+    loading = false; // Flag to track if data is being loaded
+  
+    constructor(private http: HttpClient) { }
+  
+    ngOnInit(): void {
+      this.fetchData();
     }
-  }
-
-
-  displayedColumns: string[] = ['username', 'firstName', 'lastName', 'email', 'birthDate', 'basicSalary', 'status', 'group', 'description'];
-  dataSource = this.employees;
+  
+    fetchData() {
+      this.loading = true; // Set loading flag to true
+      this.http.get<any[]>(`https://jsonplaceholder.typicode.com/photos?_page=${this.page}&_limit=${this.limit}`)
+        .subscribe((data) => {
+          // Append new data to existing array
+          this.photos = [...this.photos, ...data];
+          this.loading = false; // Set loading flag to false after data is loaded
+        });
+    }
+  
+    @HostListener('window:scroll', ['$event'])
+    onScroll(event: any) {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        // Check if user has scrolled to the bottom of the page
+        if (!this.loading) {
+          // If not already loading data, fetch more data
+          this.page++;
+          this.fetchData();
+        }
+      }
+    }
+  
+    loadMoreData() {
+      // Increment page number to load next page
+      this.page++;
+      this.fetchData();
+    }
 }
